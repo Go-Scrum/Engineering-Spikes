@@ -1,0 +1,47 @@
+enum QuestionType {
+    TEXT
+    NUMERIC
+    PREDEFINED
+}
+
+type Question {
+    id: ID!
+    title: String!
+    type: QuestionType!
+    color: String!
+    sequence: Int!
+}
+
+type Answer {
+    id: ID!
+    content: String!
+    question: Question!
+}
+
+type Query {
+    questions: [Question!]!
+    answers: [Answer!]!
+}
+
+input NewQuestion {
+    title: String!
+    type: QuestionType!
+    sequence: Int!
+    color: String!
+}
+
+input NewAnswer {
+    content: String!
+    questionId: String!
+}
+
+type Mutation {
+    createQuestion(input: NewQuestion!): Question!
+    createAnswer(input: NewAnswer!): Answer!
+}
+
+
+
+
+
+

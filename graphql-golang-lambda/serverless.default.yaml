@@ -1,0 +1,46 @@
+service: goscrum-spikes-server
+
+# Use the serverless-webpack plugin to transpile ES6
+plugins:
+  - serverless-offline
+
+package:
+  exclude:
+    - ./**
+  include:
+    - ./bin/**
+
+provider:
+  name: aws
+  runtime: go1.x
+  profile: goscrum
+  stage: dev
+  region: 'us-east-1'
+  memorySize: 128 # optional, in MB, default is 1024
+  timeout: 6 # optional, in seconds, default is 6
+  environment:
+    DEBUG: true
+    DATABASE_NAME: ${env:DATABASE_NAME}
+    DATABASE_HOSTNAME: ${env:DATABASE_HOSTNAME}
+    DATABASE_USERNAME: ${env:DATABASE_USERNAME}
+    DATABASE_PASSWORD: ${env:DATABASE_PASSWORD}
+    DATABASE_PORT: ${env:DATABASE_PORT}
+
+functions:
+  graphql:
+    handler: bin/graphql
+    events:
+      # For API Gateway - HTTP API
+      - httpApi: 'GET /health'
+      - httpApi: 'POST /graphql'
+      - httpApi: 'GET /'
+
+      # For API Gateway - REST API
+      - http: 'GET /health'
+      - http: 'POST /graphql'
+      - http: 'GET /'
+  migrate:
+    handler: bin/migrate
+
+
+

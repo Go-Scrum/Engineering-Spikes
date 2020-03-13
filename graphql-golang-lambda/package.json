@@ -1,0 +1,9 @@
+{
+  "name": "graphql-golang-lambda",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "serverless-offline": "^6.0.0-alpha.67"
+  }
+}
