@@ -26,11 +26,11 @@ provider:
     DATABASE_PASSWORD: ${env:DATABASE_PASSWORD}
     DATABASE_PORT: ${env:DATABASE_PORT}
 
-  httpApi:
-    authorizers:
-      goscrumSpikesAuthorizer:
-        identitySource: $request.header.Authorization
-        issuerUrl: https://cognito-idp.${region}.amazonaws.com/${cognitoPoolId}
+#  httpApi:
+#    authorizers:
+#      goscrumSpikesAuthorizer:
+#        identitySource: $request.header.Authorization
+#        issuerUrl: https://cognito-idp.${region}.amazonaws.com/${cognitoPoolId}
 
 functions:
   graphql:
