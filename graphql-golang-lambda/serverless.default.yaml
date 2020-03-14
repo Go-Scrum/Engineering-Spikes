@@ -26,14 +26,28 @@ provider:
     DATABASE_PASSWORD: ${env:DATABASE_PASSWORD}
     DATABASE_PORT: ${env:DATABASE_PORT}
 
+  httpApi:
+    authorizers:
+      goscrumSpikesAuthorizer:
+        identitySource: $request.header.Authorization
+        issuerUrl: https://cognito-idp.${region}.amazonaws.com/${cognitoPoolId}
+
 functions:
   graphql:
     handler: bin/graphql
     events:
       # For API Gateway - HTTP API
-      - httpApi: 'GET /health'
-      - httpApi: 'POST /graphql'
-      - httpApi: 'GET /'
+      - httpApi:
+         method: GET
+         path: '/health'
+         cors: true
+      - httpApi:
+          method: POST
+          path: '/graphql'
+          cors: true
+      - httpApi:
+          method: GET
+          path: '/'
 
       # For API Gateway - REST API
       - http: 'GET /health'
