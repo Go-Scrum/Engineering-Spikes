@@ -1,0 +1,40 @@
+service: goscrum-spikes-server
+
+# Use the serverless-webpack plugin to transpile ES6
+plugins:
+  - serverless-offline
+
+package:
+  exclude:
+    - ./**
+  include:
+    - ./bin/**
+
+provider:
+  name: aws
+  runtime: go1.x
+  profile: goscrum
+  stage: dev
+  region: 'us-east-1'
+  memorySize: 128 # optional, in MB, default is 1024
+  timeout: 30 # optional, in seconds, default is 6
+  environment:
+    DEBUG: true
+    CLIENT_ID: ${env:CLIENT_ID}
+    CLIENT_SECRET: ${env:CLIENT_SECRET}
+
+functions:
+  graphql:
+    handler: bin/slack
+    events:
+      # For API Gateway - HTTP API
+      - httpApi:
+          method: POST
+          path: '/slack/event'
+          cors: true
+
+      # For API Gateway - REST API
+      - http:
+          method: POST
+          path: '/slack/event'
+          cors: true
